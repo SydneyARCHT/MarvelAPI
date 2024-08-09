@@ -1,12 +1,8 @@
-import React, {useState, useEffect} from "react";
-import axios from "axios";
-// Import CSS 
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
 
-// Character list
-// UseEffect to fetch data from the API - https://gateway.marvel.com/v1/public/characters?ts=1&apikey=<YOURPUBLICKEY>&hash=<YOURHASH>
-// Display each character's name and thumbnail image in a grid format 
-
-const CharacterList = ({ onCharacterSelect }) => {
+const CharacterList = () => {
   const [characters, setCharacters] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -41,8 +37,8 @@ const CharacterList = ({ onCharacterSelect }) => {
       <h1>Marvel Characters</h1>
       <ul>
         {characters.map(character => (
-          <li key={character.id} onClick={() => onCharacterSelect(character)}>
-            {character.name}
+          <li key={character.id}>
+            <Link to={`/character/${character.id}`}>{character.name}</Link>
           </li>
         ))}
       </ul>

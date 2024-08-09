@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
-const CharacterDetails = ({ characterID }) => {
+const CharacterDetail = () => {
+  const { id } = useParams(); 
   const [character, setCharacter] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -9,21 +11,23 @@ const CharacterDetails = ({ characterID }) => {
   const fetchCharacterDetails = async () => {
     const publicKey = '22cb00e699f1a50a46f928ece562aa75';
     const hash = '5fd281a0e833a7951ad912f91e157216';
-    const url = `https://gateway.marvel.com/v1/public/characters/${characterID}?ts=1&apikey=${publicKey}&hash=${hash}`;
+    const url = `https://gateway.marvel.com/v1/public/characters/${id}?ts=1&apikey=${publicKey}&hash=${hash}`;
 
     try {
       const response = await axios.get(url);
       setCharacter(response.data.data.results[0]);
-      setLoading(false); 
+      setLoading(false);
     } catch (err) {
       setError('Error fetching details for character!');
       console.error(err);
-      setLoading(false); 
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    if (characterID) {fetchCharacterDetails();}}, [characterID]);
+    if (id) fetchCharacterDetails();
+  }, [id]);
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
   if (!character) return <p>No character data available</p>;
@@ -46,4 +50,4 @@ const CharacterDetails = ({ characterID }) => {
   );
 };
 
-export default CharacterDetails;
+export default CharacterDetail;
